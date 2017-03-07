@@ -1,6 +1,6 @@
-## PS1 MDDN 242 2017
+## PS1 MDDN 242 2017 - LABCAT - Shane Watters - 300078996
 
-### Outrageous clock
+### Digital Water Clock
 
 Describe the idea for your clock here - replacing this text.
 Be sure to use complete sentences, and you can reference your 
