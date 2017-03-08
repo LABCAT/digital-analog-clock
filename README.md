@@ -2,13 +2,6 @@
 
 ### Digital Water Clock
 
-Describe the idea for your clock here - replacing this text.
-Be sure to use complete sentences, and you can reference your 
-image above. You can also include
-[web links](https://en.wikipedia.org/wiki/Clock_of_the_Long_Now)
-to other pages that support your ideas.  The explanation should
-be short but compete, no more than [100 words](https://wordcounter.net/).
+The digital water clock is inspired by real world water clocks which display time by using a varying water level. The digital water clock will represent time in the same manner using pixels rather than water.  
 
-Replace the "Outrageous clock" title above with the name of
-your clock. Also update both images keeping their original sizes:
-preview.jpg (960x500) and thumbnail.png (230x120).
+Different shapes will be used to represent hours, minutes and seconds. To begin with the shapes will have no background colour and as time passes the colour will change to enabling the viewer to read the current time.  The hour and minute shapes will also contain numbers that are revealed once the background becomes coloured.
