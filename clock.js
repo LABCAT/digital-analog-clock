@@ -3,43 +3,124 @@
  */ 
 function draw_clock(hour, minute, second, millis, alarm) {
   
+  //set up some variables to determine the first and second digits of the current minutes
+  var mintuteLength = minute.toString().length;
   var firstMinuteNumber = floor(map(minute, 0, 60, 0, 6));
-  var secondMinuteNumber = parseInt(minute.toString().substring(1, 2));
-  // console.debug(second);
-  // console.debug(minute);
-  // console.debug(firstMinuteNumber);
-  //console.debug(secondMinuteNumber);
+  var secondMinuteNumber = parseInt(minute.toString().substring(mintuteLength - 1, mintuteLength));
 
   // use parsley green as the background colour
   background(26, 86, 34); 
   //set the stroke weight to 0
   strokeWeight(0);
 
-  //first create the number to represent hours
   
   //use thunderbird red as the fill colour
   fill(205, 38, 19);
-	
-  //create the number 4 by drawing 5 rectangles
-  rect(290, 145, 30, 210);
-  rect(200, 265, 150, 30);
-  rect(200, 235, 30, 30);
-  rect(230, 205, 30, 30);
-  rect(260, 175, 30, 30);
+  //draw the hours digits (from 1-12) using modulo operation
+  drawHourDigit(hour % 12);
   
-  //next create the numbers to represent minutes
-  
-  //use lightning yellow with 50% transparency as the fill colour
-  fill(255, 204, 26, 127);
-
   //rotate the minute numbers 6 degrees every second
   translate(580, 235);
   angleMode(DEGREES);
   rotate((second * 6));
   
+  //use lightning yellow with 50% transparency as the fill colour
+  fill(255, 204, 26, 127);
+  //draw the minute digits
   drawFirstMinuteDigit(firstMinuteNumber);
   drawSecondMinuteDigit(secondMinuteNumber);
  
+}
+
+function drawHourDigit(number){
+  //draw a collection of rectangles to represent the current hour (from 1-12)
+  //to provide a digital representation of the number passed to this funtion
+  switch (number) {
+        case 0:
+          rect(110, 145, 30, 210);
+          rect(80, 175, 30, 30); 
+          rect(230, 145, 90, 30);
+          rect(230, 235, 90, 30);
+          rect(230, 325, 90, 30);
+          rect(200, 265, 30, 60);
+          rect(320, 175, 30, 60);
+            break;
+        case 1:
+          rect(290, 145, 30, 210);
+          rect(260, 175, 30, 30); 
+            break;
+        case 2:
+          rect(230, 145, 90, 30);
+          rect(230, 235, 90, 30);
+          rect(230, 325, 90, 30);
+          rect(200, 265, 30, 60);
+          rect(320, 175, 30, 60);
+            break;
+        case 3:
+          rect(230, 145, 90, 30);
+          rect(230, 235, 90, 30);
+          rect(230, 325, 90, 30);
+          rect(320, 175, 30, 60);
+          rect(320, 265, 30, 60);
+            break;
+        case 4:
+          rect(290, 145, 30, 210);
+          rect(200, 265, 150, 30);
+          rect(200, 235, 30, 30);
+          rect(230, 205, 30, 30);
+          rect(260, 175, 30, 30);
+            break;
+        case 5:
+          rect(230, 145, 90, 30);
+          rect(230, 235, 90, 30);
+          rect(230, 325, 90, 30);
+          rect(200, 175, 30, 60);
+          rect(320, 265, 30, 60);
+            break;
+        case 6:
+          rect(230, 145, 90, 30);
+          rect(230, 235, 90, 30);
+          rect(230, 325, 90, 30);
+          rect(200, 175, 30, 60);
+          rect(200, 265, 30, 60);
+          rect(320, 265, 30, 60);
+            break;
+        case 7:
+          rect(230, 145, 90, 30);
+          rect(320, 145, 30, 210);  
+            break;
+        case 8:
+          rect(230, 145, 90, 30);
+          rect(230, 235, 90, 30);
+          rect(230, 325, 90, 30);
+          rect(200, 175, 30, 60);
+          rect(200, 265, 30, 60);
+          rect(320, 175, 30, 60);
+          rect(320, 265, 30, 60);
+            break;
+        case 9:
+          rect(230, 145, 90, 30);
+          rect(230, 235, 90, 30);
+          rect(230, 325, 90, 30);
+          rect(200, 175, 30, 60);
+          rect(320, 175, 30, 60);
+          rect(320, 265, 30, 60);
+            break;
+        case 10:
+          rect(110, 145, 30, 210);
+          rect(80, 175, 30, 30); 
+          rect(230, 145, 90, 30);
+          rect(230, 325, 90, 30);
+          rect(200, 175, 30, 150);
+          rect(320, 175, 30, 150);
+            break;
+        case 11:
+          rect(110, 145, 30, 210);
+          rect(80, 175, 30, 30); 
+          rect(290, 145, 30, 210);
+          rect(260, 175, 30, 30); 
+            break;
+    }
 }
 
 function drawFirstMinuteDigit(number){
