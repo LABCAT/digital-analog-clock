@@ -7,6 +7,7 @@ function draw_clock(hour, minute, second, millis, alarm) {
 	var firstMinuteDigit = floor(map(minute, 0, 60, 0, 6));
 	var secondMinuteDigit = minute % 10;
 	var currentHour = 12;
+	//if house is not 0 or 23 use the modulo function to set the currentHour variable
 	if(hour % 12){
 		var currentHour = hour % 12;
 	}
@@ -15,31 +16,27 @@ function draw_clock(hour, minute, second, millis, alarm) {
 	background(26, 86, 34); 
 	//set the stroke weight to 0
 	strokeWeight(0);
-
-	
 	  
 	//use thunderbird red as the fill colour
 	fill(205, 38, 19);
-	//draw the hours digits (from 1-12) using modulo operation
-	drawNumber(12, 360, 145, 30, second);
+	//draw the hours digits 
+	drawNumber(hour, 360, 205, 30, second);
 	  
 	//use lightning yellow with 50% transparency as the fill colour
 	fill(255, 204, 26, 127);
 	//draw the minute digits
-	drawNumber(firstMinuteDigit, 560, 180, 20, second);
-	drawNumber(secondMinuteDigit, 680, 180, 20, second);
-	//drawFirstMinuteDigit(firstMinuteNumber);
-	//drawSecondMinuteDigit(secondMinuteNumber);
+	drawNumber(firstMinuteDigit, 560, 240, 20, second);
+	drawNumber(secondMinuteDigit, 680, 240, 20, second);
 }
 
 function drawNumber(number, x, y, size, second){
 	/* this resets any previous translations */
 	resetMatrix();
-	translate(x, y);	
+	translate(x, y);
 	angleMode(DEGREES);
 	rotate((second * 6));  
-	//draw a collection of rectangles to represent the current hour (from 1-12)
-	//to provide a digital representation of the number passed to this funtion
+	
+	//draw a collection of rectangles to provide a digital representation of the number (from 0-12) passed to this funtion
 	switch (number) {
 		case 0:
 			rect(size * 4, 0, size * 3, size);
