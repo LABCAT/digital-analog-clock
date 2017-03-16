@@ -12,121 +12,123 @@ function draw_clock(hour, minute, second, millis, alarm) {
 		var currentHour = hour % 12;
 	}
 
+	//set angle mode to degrees
+	angleMode(DEGREES);
 	// use parsley green as the background colour
 	background(26, 86, 34); 
 	//set the stroke weight to 0
 	strokeWeight(0);
+	
 	  
 	//use thunderbird red as the fill colour
 	fill(205, 38, 19);
 	//draw the hours digits 
-	drawNumber(hour, 360, 205, 30, second);
+	drawNumber(currentHour, 360, 255, 25, (second * 6));
 	  
 	//use lightning yellow with 50% transparency as the fill colour
 	fill(255, 204, 26, 127);
 	//draw the minute digits
-	drawNumber(firstMinuteDigit, 560, 240, 20, second);
-	drawNumber(secondMinuteDigit, 680, 240, 20, second);
+	drawNumber(firstMinuteDigit, 560, 270, 15, (second * 6));
+	drawNumber(secondMinuteDigit, 680, 270, 15, (second * 6));
 }
 
-function drawNumber(number, x, y, size, second){
-	/* this resets any previous translations */
+function drawNumber(number, x, y, s, degrees){
+	//this resets any previous translations
 	resetMatrix();
 	translate(x, y);
-	angleMode(DEGREES);
-	rotate((second * 6));  
+	rotate(degrees);  
 	
 	//draw a collection of rectangles to provide a digital representation of the number (from 0-12) passed to this funtion
 	switch (number) {
 		case 0:
-			rect(size * 4, 0, size * 3, size);
-			rect(size * 4, 0 + size * 6, size * 3, size);
-			rect(size * 3, 0 + size, size, size * 5);
-			rect(size * 7, 0 + size, size, size * 5);
+			rect(s * 4, 0, s * 3, s);
+			rect(s * 4, 0 + s * 6, s * 3, s);
+			rect(s * 3, 0 + s, s, s * 5);
+			rect(s * 7, 0 + s, s, s * 5);
 			break;
 		case 1:
-			rect(size * 6, 0, size, size * 7);
-			rect(size * 5, 0 + size, size, size);
+			rect(s * 6, 0, s, s * 7);
+			rect(s * 5, 0 + s, s, s);
 			break;
 		case 2:
-			rect(size * 4, 0, size * 3, size);
-			rect(size * 4, 0 + size * 3, size * 3, size);
-			rect(size * 4, 0 + size * 6, size * 3, size);
-			rect(size * 3, 0 + size * 4, size, size * 2);
-			rect(size * 7, 0 + size, size, size * 2);
+			rect(s * 4, 0, s * 3, s);
+			rect(s * 4, 0 + s * 3, s * 3, s);
+			rect(s * 4, 0 + s * 6, s * 3, s);
+			rect(s * 3, 0 + s * 4, s, s * 2);
+			rect(s * 7, 0 + s, s, s * 2);
 			break;
 		case 3:
-			rect(size * 4, 0, size * 3, size);
-			rect(size * 4, 0 + size * 3, size * 3, size);
-			rect(size * 4, 0 + size * 6, size * 3, size);
-			rect(size * 7, 0 + size * 4, size, size * 2);
-			rect(size * 7, 0 + size, size, size * 2);
+			rect(s * 4, 0, s * 3, s);
+			rect(s * 4, 0 + s * 3, s * 3, s);
+			rect(s * 4, 0 + s * 6, s * 3, s);
+			rect(s * 7, 0 + s * 4, s, s * 2);
+			rect(s * 7, 0 + s, s, s * 2);
 			break;
 		case 4:
-			rect(size * 6, 0, size, size * 7);
-			rect(size * 5, size, size, size);
-			rect(size * 4, size * 2, size, size);
-			rect(size * 3, size * 3, size, size);
-			rect(size * 3, size * 4, size * 5, size);
+			rect(s * 6, 0, s, s * 7);
+			rect(s * 5, s, s, s);
+			rect(s * 4, s * 2, s, s);
+			rect(s * 3, s * 3, s, s);
+			rect(s * 3, s * 4, s * 5, s);
 			break;
 		case 5:
-			rect(size * 4, 0, size * 3, size);
-			rect(size * 4, 0 + size * 3, size * 3, size);
-			rect(size * 4, 0 + size * 6, size * 3, size);
-			rect(size * 7, 0 + size * 4, size, size * 2);
-			rect(size * 3, 0 + size, size, size * 2);
+			rect(s * 4, 0, s * 3, s);
+			rect(s * 4, 0 + s * 3, s * 3, s);
+			rect(s * 4, 0 + s * 6, s * 3, s);
+			rect(s * 7, 0 + s * 4, s, s * 2);
+			rect(s * 3, 0 + s, s, s * 2);
 			break;
 		case 6:
-			rect(size * 4, 0, size * 3, size);
-			rect(size * 4, 0 + size * 3, size * 3, size);
-			rect(size * 4, 0 + size * 6, size * 3, size);
-			rect(size * 7, 0 + size * 4, size, size * 2);
-			rect(size * 3, 0 + size * 4, size, size * 2);
-			rect(size * 3, 0 + size, size, size * 2);	
+			rect(s * 4, 0, s * 3, s);
+			rect(s * 4, 0 + s * 3, s * 3, s);
+			rect(s * 4, 0 + s * 6, s * 3, s);
+			rect(s * 7, 0 + s * 4, s, s * 2);
+			rect(s * 3, 0 + s * 4, s, s * 2);
+			rect(s * 3, 0 + s, s, s * 2);	
 			break;
 		case 7:
-			rect(size * 6, 0, size, size * 7);
-			rect(size * 3, 0, size * 3, size);
+			rect(s * 6, 0, s, s * 7);
+			rect(s * 3, 0, s * 3, s);
 			break;
 		case 8:
-			rect(size * 4, 0, size * 3, size);
-			rect(size * 4, 0 + size * 3, size * 3, size);
-			rect(size * 4, 0 + size * 6, size * 3, size);
-			rect(size * 3, 0 + size * 4, size, size * 2);
-			rect(size * 3, 0 + size, size, size * 2);
-			rect(size * 7, 0 + size * 4, size, size * 2);
-			rect(size * 7, 0 + size, size, size * 2);
+			rect(s * 4, 0, s * 3, s);
+			rect(s * 4, s * 3, s * 3, s);
+			rect(s * 4, s * 6, s * 3, s);
+			rect(s * 3, s * 4, s, s * 2);
+			rect(s * 3, s, s, s * 2);
+			rect(s * 7, s * 4, s, s * 2);
+			rect(s * 7, s , s, s * 2);
 			break;
 		case 9:
-			rect(size * 4, 0, size * 3, size);
-			rect(size * 4, 0 + size * 3, size * 3, size);
-			rect(size * 4, 0 + size * 6, size * 3, size);
-			rect(size * 7, 0 + size, size, size * 2);
-			rect(size * 7, 0 + size * 4, size, size * 2);
-			rect(size * 3, 0 + size, size, size * 2);	
+			rect(s * 4, 0, s * 3, s);
+			rect(s * 4, 0 + s * 3, s * 3, s);
+			rect(s * 4, 0 + s * 6, s * 3, s);
+			rect(s * 7, 0 + s, s, s * 2);
+			rect(s * 7, 0 + s * 4, s, s * 2);
+			rect(s * 3, 0 + s, s, s * 2);	
 			break;
 		case 10:
-			rect(size, 0, size, size * 7);
-			rect(0, 0 + size, size, size);
-			rect(size * 4, 0, size * 3, size);
-			rect(size * 4, 0 + size * 6, size * 3, size);
-			rect(size * 3, 0 + size, size, size * 5);
-			rect(size * 7, 0 + size, size, size * 5);
+			rect(s, 0, s, s * 7);
+			rect(0, 0 + s, s, s);
+			rect(s * 4, 0, s * 3, s);
+			rect(s * 4, 0 + s * 6, s * 3, s);
+			rect(s * 3, 0 + s, s, s * 5);
+			rect(s * 7, 0 + s, s, s * 5);
 			break;
 		case 11:
-			rect(size * 2, 0, size, size * 7);
-			rect(size * 1, 0 + size, size, size);
-			rect(size * 6, 0, size, size * 7);
-			rect(size * 5, 0 + size, size, size);
+			rect(s * 2, 0, s, s * 7);
+			rect(s * 1, 0 + s, s, s);
+			rect(s * 6, 0, s, s * 7);
+			rect(s * 5, 0 + s, s, s);
 			break;
 		case 12:
-			rect(0 + size, 0, size, size * 7);
-			rect(0, 0 + size, size, size); 
-			rect(size * 4, 0, size * 3, size);
-			rect(size * 4, 0 + size * 3, size * 3, size);
-			rect(size * 4, 0 + size * 6, size * 3, size);
-			rect(size * 3, 0 + size * 4, size, size * 2);
-			rect(size * 7, 0 + size, size, size * 2);
+			rect(0 + s, 0, s, s * 7);
+			rect(0, 0 + s, s, s); 
+			rect(s * 4, 0, s * 3, s);
+			rect(s * 4, 0 + s * 3, s * 3, s);
+			rect(s * 4, 0 + s * 6, s * 3, s);
+			rect(s * 3, 0 + s * 4, s, s * 2);
+			rect(s * 7, 0 + s, s, s * 2);
 			break;
 	}
 }
