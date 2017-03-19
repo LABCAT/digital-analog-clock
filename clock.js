@@ -1,34 +1,28 @@
-//multidimensional array to represent numbers from 0-12
-//each number is respresented by 7 segments, each segment has a different level of transparency to determine whether or not it can be seen
-var numberSegments = [
-  // 0
-  [255,0,255,255,255,255,255],
-  // 1
-  [0,0,0,0,255,0,255],
-  // 2
-  [255,255,255,0,255,255,0],
-  //3
-  [255,255,255,0,255,0,255],
-  //4
-  [0,255,0,255,255,0,255],
-  //5
-  [255,255,255,255,0,0,255],
-  //6
-  [255,255,255,255,0,255,255],
-  //7
-  [255,0,0,0,255,0,255],
-  //8
-  [255,255,255,255,255,255,255],
-  //9
-  [255,255,255,255,255,0,255],
-  //10
-  [255,0,255,255,255,255,255],
-  //11
-  [0,0,0,0,255,0,255],
-  //12
-  [255,255,255,0,255,255,0]
-]
-
+/*
+json object to represent a collection of characters
+a character on a traditional digital clock is made of 7 segments
+therefore each element of this object is an array is of 7 values
+each value is the level of transparency for each segment to determine whether or not it can be seen
+*/
+var charSegments = {
+  0 : [255,0,255,255,255,255,255],
+  1 : [0,0,0,0,255,0,255],
+  2 : [255,255,255,0,255,255,0],
+  3 : [255,255,255,0,255,0,255],
+  4 : [0,255,0,255,255,0,255],
+  5 : [255,255,255,255,0,0,255],
+  6 : [255,255,255,255,0,255,255],
+  7 : [255,0,0,0,255,0,255],
+  8 : [255,255,255,255,255,255,255],
+  9 : [255,255,255,255,255,0,255],
+  10 : [255,0,255,255,255,255,255],
+  11 : [0,0,0,0,255,0,255],
+  12 : [255,255,255,0,255,255,0]
+}
+/*
+json object to represent each number on the clock face
+each number has a value for the x position, the y position and the rotation amount (in degrees)
+*/
 var clockFaceNumbers = {
 	1: { 
 		'x': 570,
@@ -92,14 +86,58 @@ var clockFaceNumbers = {
 	},
 }
 
+var alarmObj = {
+	
+	countdown: 20,
+	
+	previousSecond : -1,
+	
+	alarmRadius : 0,
+	
+	ready: false,
+	
+	init: function(second, millis, alarm){
+		resetMatrix();
+		if(this.countdown > 0){
+			fill(255, 0, 0);
+			ellipse(480, 250, this.alarmRadius, this.alarmRadius);
+			if(second != this.previousSecond){
+				this.previousSecond = second;
+				this.countdown--;
+			}
+			this.alarmRadius++;
+		}
+		else if(this.countdown == 0){
+			clear();
+			fill(255, 0, 0, floor(map(millis, 0, 999, 0, 255)));
+			rect(0, 0, 960, 500);
+			this.ready = false;
+		}
+	},
+	reset: function() {
+		if(!this.ready){
+			resetMatrix();
+			fill(255);
+			rect(0, 0, 960, 500);
+			this.countdown = 20;
+			this.previousSecond = -1;
+			this.alarmRadius = 0;
+			this.ready = true;
+		}
+	}
+}
 
 /*
  * us p5.js to draw a clock on a 960x500 canvas
  */ 
 function draw_clock(hour, minute, second, millis, alarm) {
+	//set angle mode to degrees
+	angleMode(DEGREES);
+	//set the stroke weight to 0
+	strokeWeight(0);
   
+	//variables
 	var rotationAmount = floor(map(second, 0, 59, 0, 359));
-	//set up some variables to determine the first and second digits of the current minutes and the current hour (12 hour format)
 	var firstMinuteDigit = floor(map(minute, 0, 59, 0, 5.9));
 	var secondMinuteDigit = minute % 10;
 	var currentHour = 12;
@@ -108,21 +146,32 @@ function draw_clock(hour, minute, second, millis, alarm) {
 		currentHour = hour % 12;
 	}
 	
-	//set angle mode to degrees
-	angleMode(DEGREES);
-	//set the stroke weight to 0
-	strokeWeight(0);
+	fill(random(255), random(255), random(255));
+	push();
+	translate(480, 250);
+	//rotate 0.5 of a degree every millisecond
+	rotate(map(millis, 0, 719, 0, 359));
+	rect(0, 0, 480, 2);
+	pop();	
 	
 	//draw the clock face and highlight the current hour
 	drawClockFace(currentHour, rotationAmount);
-	
+
 	//draw the minute digits
 	drawNumber(440, 250, 10, firstMinuteDigit, rotationAmount, Array(70, 151, 255));
 	drawNumber(520, 250, 10, secondMinuteDigit, rotationAmount, Array(70, 151, 255));
+	
+	if(alarm >= 0){
+		//if the alarm is set or activated, initialise the alarm object
+		alarmObj.init(second, millis, alarm);
+	}
+	else {
+		//reset the alarm object when the alarm is turned off
+		alarmObj.reset();
+	}
 }
 
-function drawClockFace(currentHour, rotationAmount){
-	//draw clock background
+function drawClockBackground() {
 	fill(0); 
 	ellipse(480, 250, 498, 498);
 	fill(70, 151, 255); 
@@ -131,8 +180,13 @@ function drawClockFace(currentHour, rotationAmount){
 	ellipse(480, 250, 492, 492);
 	fill(2, 4, 103);  
 	ellipse(480, 250, 489, 489);
-	
+}
+
+function drawClockFace(currentHour, rotationAmount){
 	var rgb = Array(), rotation = 0;
+	
+	drawClockBackground();
+	
 	//draw all the numbers on the clock face
 	for(var i =1; i <= 12; i++){
 		if(i == currentHour){
@@ -160,36 +214,37 @@ function drawNumber(x, y, s, number, degrees, rgb = Array(255, 255, 255)){
 	//adjustment variables used to allow the shapes to be drawn with 0,0 point as the center of the shapes
 	var xAdjuster = -(s * 5) - s / 2;
 	var yAdjuster = -(s * 9) / 2;
+	
 	//this resets any previous translations
 	resetMatrix();
 	translate(x, y);
 	rotate(degrees);  
 
 	//top horizontal segment
-	fill(rgb[0], rgb[1], rgb[2], numberSegments[number][0]);
+	fill(rgb[0], rgb[1], rgb[2], charSegments[number][0]);
 	rect(xAdjuster + s * 4, yAdjuster + 0, s * 3, s);
 	//middle horizontal segment
-	fill(rgb[0], rgb[1], rgb[2], numberSegments[number][1]);
+	fill(rgb[0], rgb[1], rgb[2], charSegments[number][1]);
 	rect(xAdjuster + s * 4, yAdjuster + s * 4, s * 3, s);
 	//bottom horizontal segment
-	fill(rgb[0], rgb[1], rgb[2], numberSegments[number][2]);
+	fill(rgb[0], rgb[1], rgb[2], charSegments[number][2]);
 	rect(xAdjuster + s * 4, yAdjuster + s * 8, s * 3, s);
 	//top-left vertical segment
-	fill(rgb[0], rgb[1], rgb[2], numberSegments[number][3]);
+	fill(rgb[0], rgb[1], rgb[2], charSegments[number][3]);
 	rect(xAdjuster + s * 3, yAdjuster + s, s, s * 3);
 	//top-right vertical segment
-	fill(rgb[0], rgb[1], rgb[2], numberSegments[number][4]);
+	fill(rgb[0], rgb[1], rgb[2], charSegments[number][4]);
 	rect(xAdjuster + s * 7, yAdjuster + s, s, s * 3);
 	//bottom-left vertical segment
-	fill(rgb[0], rgb[1], rgb[2], numberSegments[number][5]);
+	fill(rgb[0], rgb[1], rgb[2], charSegments[number][5]);
 	rect(xAdjuster + s * 3, yAdjuster + s * 5, s, s * 3);
 	//bottom-right vertical segment
-	fill(rgb[0], rgb[1], rgb[2], numberSegments[number][6]);
+	fill(rgb[0], rgb[1], rgb[2], charSegments[number][6]);
 	rect(xAdjuster + s * 7, yAdjuster + s * 5, s, s * 3);
 	if(number >= 10){
-		fill(rgb[0], rgb[1], rgb[2], numberSegments[1][4]);
+		fill(rgb[0], rgb[1], rgb[2], charSegments[1][4]);
 		rect(xAdjuster + s, yAdjuster + s, s, s * 3);
-		fill(rgb[0], rgb[1], rgb[2], numberSegments[1][6]);
+		fill(rgb[0], rgb[1], rgb[2], charSegments[1][6]);
 		rect(xAdjuster + s, yAdjuster + s * 5, s, s * 3);
 	}
 }
