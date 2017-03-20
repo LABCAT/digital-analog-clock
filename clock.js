@@ -1,3 +1,99 @@
+/* object to encapsulate the variables and functionality
+   required to process the alarm
+ */
+var alarmProcessor = {
+	
+	//variables
+	countdown: 20,
+	
+	previousSecond : -1,
+	
+	alarmRadius : 0,
+	
+	ready: false,
+
+	//JSON object to represent each character displayed by the drawMessage function
+	messageChars: {
+		1: { 
+			'x': 220,
+			'y': 250,
+			'char' : 'A'
+		},
+		2: { 
+			'x': 340,
+			'y': 250,
+			'char' : 'L'
+		},
+		3: { 
+			'x': 460,
+			'y': 250,
+			'char' : 'E'
+		},
+		4: { 
+			'x': 580,
+			'y': 250,
+			'char' : 'R'
+		},
+		5: { 
+			'x': 760,
+			'y': 250,
+			'char' : 'T'
+		},
+	},
+	//this function will be called when the alarm is set
+	process: function(second, millis, alarm){
+		resetMatrix();
+		//if countdown is greater zero, the alarm is no going off yet
+		if(this.countdown > 0){
+			//to create a warning that the alarm is about to go off,
+			//a circle is drawn from the center of the canvas and gradually grows to fill the canvas
+			fill(255, 0, 0);
+			ellipse(480, 250, this.alarmRadius, this.alarmRadius);
+			if(second != this.previousSecond){
+				this.previousSecond = second;
+				this.countdown--;
+			}
+			this.alarmRadius++;
+		}
+		else if(this.countdown == 0){
+			clear();
+			//once the alarm is going off, fill the canvas with a red rectangle
+			//use a varying level of transparency to create a flashing effect
+			var transparency = floor(map(millis, 0, 999, 0, 255));
+			fill(255, 0, 0, transparency);
+			rect(0, 0, 960, 500);
+			this.drawMessage();
+			this.ready = false;
+		}
+	},
+	//draws the message "ALERT" when the alarm is going off
+	drawMessage: function (){
+		for(var i =1; i <= 5; i++){
+			drawCharacter(
+				this.messageChars[i]['x'], 
+				this.messageChars[i]['y'], 
+				20, 
+				this.messageChars[i]['char'], 
+				0, 
+				Array(255, 255, 255)
+			);
+		}
+
+	},
+	//when the alarm is turned off this function is used to reset this object to it's original state
+	reset: function() {
+		if(!this.ready){
+			resetMatrix();
+			fill(255);
+			rect(0, 0, 960, 500);
+			this.countdown = 20;
+			this.previousSecond = -1;
+			this.alarmRadius = 0;
+			this.ready = true;
+		}
+	}
+}
+
 /*
 json object to represent a collection of characters
 a character on a traditional digital clock is made of 7 segments
@@ -30,150 +126,64 @@ each number has a value for the x position, the y position and the rotation amou
 */
 var clockFaceNumbers = {
 	1: { 
-		'x': 570,
-		'y': 80,
-		'rotation' : 30
-	},
-	2: { 
-		'x': 640,
-		'y': 145,
-		'rotation' : 60
-	},
-	3: { 
-		'x': 670,
-		'y': 250,
-		'rotation' : 90
-	},
-	4: { 
-		'x': 650,
-		'y': 355,
-		'rotation' : 120
-	},
-	5: { 
-		'x': 570,
-		'y': 420,
-		'rotation' : 150
-	},
-	6: { 
-		'x': 480,
-		'y': 445,
-		'rotation' : 180
-	},
-	7: { 
 		'x': 390,
 		'y': 420,
 		'rotation' : 210
 	},
-	8: { 
+	2: { 
 		'x': 320,
 		'y': 355,
 		'rotation' : 240
 	},
-	9: { 
+	3: { 
 		'x': 290,
 		'y': 250,
 		'rotation' : 270
 	},
-	10: { 
+	4: { 
 		'x': 310,
 		'y': 155,
 		'rotation' : 300
 	},
-	11: { 
+	5: { 
 		'x': 380,
 		'y': 80,
 		'rotation' : 330
 	},
-	12: { 
+	6: { 
 		'x': 490,
 		'y': 55,
 		'rotation' : 360
 	},
-}
-
-var alarmObj = {
-	
-	countdown: 20,
-	
-	previousSecond : -1,
-	
-	alarmRadius : 0,
-	
-	ready: false,
-
-	messageChars: {
-		1: { 
-			'x': 220,
-			'y': 250,
-			'char' : 'A'
-		},
-		2: { 
-			'x': 340,
-			'y': 250,
-			'char' : 'L'
-		},
-		3: { 
-			'x': 460,
-			'y': 250,
-			'char' : 'E'
-		},
-		4: { 
-			'x': 580,
-			'y': 250,
-			'char' : 'R'
-		},
-		5: { 
-			'x': 760,
-			'y': 250,
-			'char' : 'T'
-		},
+	7: { 
+		'x': 570,
+		'y': 80,
+		'rotation' : 30
 	},
-	
-	init: function(second, millis, alarm){
-		resetMatrix();
-		if(this.countdown > 0){
-			fill(255, 0, 0);
-			ellipse(480, 250, this.alarmRadius, this.alarmRadius);
-			if(second != this.previousSecond){
-				this.previousSecond = second;
-				this.countdown--;
-			}
-			this.alarmRadius++;
-		}
-		else if(this.countdown == 0){
-			clear();
-			var transparency = floor(map(millis, 0, 999, 0, 255));
-			fill(255, 0, 0, transparency);
-			rect(0, 0, 960, 500);
-			this.drawMessage();
-			this.ready = false;
-		}
+	8: { 
+		'x': 640,
+		'y': 145,
+		'rotation' : 60
 	},
-
-	drawMessage: function (){
-		for(var i =1; i <= 5; i++){
-			drawCharacter(
-				this.messageChars[i]['x'], 
-				this.messageChars[i]['y'], 
-				20, 
-				this.messageChars[i]['char'], 
-				0, 
-				Array(255, 255, 255)
-			);
-		}
-
+	9: { 
+		'x': 670,
+		'y': 250,
+		'rotation' : 90
 	},
-
-	reset: function() {
-		if(!this.ready){
-			resetMatrix();
-			fill(255);
-			rect(0, 0, 960, 500);
-			this.countdown = 20;
-			this.previousSecond = -1;
-			this.alarmRadius = 0;
-			this.ready = true;
-		}
+	10: { 
+		'x': 650,
+		'y': 355,
+		'rotation' : 120
+	},
+	11: { 
+		'x': 570,
+		'y': 420,
+		'rotation' : 150
+	},
+	12: { 
+		'x': 480,
+		'y': 445,
+		'rotation' : 180
 	}
 }
 
@@ -213,11 +223,11 @@ function draw_clock(hour, minute, second, millis, alarm) {
 	
 	if(alarm >= 0){
 		//if the alarm is set or activated, initialise the alarm object
-		alarmObj.init(second, millis, alarm);
+		alarmProcessor.process(second, millis, alarm);
 	}
 	else {
 		//reset the alarm object when the alarm is turned off
-		alarmObj.reset();
+		alarmProcessor.reset();
 	}
 }
 
