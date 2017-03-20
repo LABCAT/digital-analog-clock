@@ -17,7 +17,12 @@ var charSegments = {
   9 : [255,255,255,255,255,0,255],
   10 : [255,0,255,255,255,255,255],
   11 : [0,0,0,0,255,0,255],
-  12 : [255,255,255,0,255,255,0]
+  12 : [255,255,255,0,255,255,0],
+  'G' : [255,0,255,255,0,255,255],
+  'E' : [255,255,255,255,0,255,0],
+  'T' : [255,0,0,255,0,255,0],
+  'U' : [0,0,255,255,255,255,255],
+  'P' : [255,255,0,255,255,255,0]
 }
 /*
 json object to represent each number on the clock face
@@ -95,6 +100,34 @@ var alarmObj = {
 	alarmRadius : 0,
 	
 	ready: false,
+
+	messageChars: {
+		1: { 
+			'x': 170,
+			'y': 250,
+			'char' : 'G'
+		},
+		2: { 
+			'x': 290,
+			'y': 250,
+			'char' : 'E'
+		},
+		3: { 
+			'x': 470,
+			'y': 250,
+			'char' : 'T'
+		},
+		4: { 
+			'x': 670,
+			'y': 250,
+			'char' : 'U'
+		},
+		5: { 
+			'x': 790,
+			'y': 250,
+			'char' : 'P'
+		},
+	},
 	
 	init: function(second, millis, alarm){
 		resetMatrix();
@@ -109,11 +142,28 @@ var alarmObj = {
 		}
 		else if(this.countdown == 0){
 			clear();
-			fill(255, 0, 0, floor(map(millis, 0, 999, 0, 255)));
+			var transparency = floor(map(millis, 0, 999, 0, 255));
+			fill(255, 0, 0, transparency);
 			rect(0, 0, 960, 500);
+			this.drawMessage();
 			this.ready = false;
 		}
 	},
+
+	drawMessage: function (){
+		for(var i =1; i <= 5; i++){
+			drawCharacter(
+				this.messageChars[i]['x'], 
+				this.messageChars[i]['y'], 
+				20, 
+				this.messageChars[i]['char'], 
+				0, 
+				Array(255, 255, 255)
+			);
+		}
+
+	},
+
 	reset: function() {
 		if(!this.ready){
 			resetMatrix();
@@ -158,8 +208,8 @@ function draw_clock(hour, minute, second, millis, alarm) {
 	drawClockFace(currentHour, rotationAmount);
 
 	//draw the minute digits
-	drawNumber(440, 250, 10, firstMinuteDigit, rotationAmount, Array(70, 151, 255));
-	drawNumber(520, 250, 10, secondMinuteDigit, rotationAmount, Array(70, 151, 255));
+	drawCharacter(440, 250, 10, firstMinuteDigit, rotationAmount, Array(70, 151, 255));
+	drawCharacter(520, 250, 10, secondMinuteDigit, rotationAmount, Array(70, 151, 255));
 	
 	if(alarm >= 0){
 		//if the alarm is set or activated, initialise the alarm object
@@ -197,7 +247,7 @@ function drawClockFace(currentHour, rotationAmount){
 			rgb = Array(11, 247, 48);
 			rotation = clockFaceNumbers[i]['rotation'];
 		}
-		drawNumber(
+		drawCharacter(
 			clockFaceNumbers[i]['x'], 
 			clockFaceNumbers[i]['y'], 
 			10, 
@@ -210,7 +260,7 @@ function drawClockFace(currentHour, rotationAmount){
 	
 }
 
-function drawNumber(x, y, s, number, degrees, rgb = Array(255, 255, 255)){
+function drawCharacter(x, y, s, char, degrees, rgb = Array(255, 255, 255)){
 	//adjustment variables used to allow the shapes to be drawn with 0,0 point as the center of the shapes
 	var xAdjuster = -(s * 5) - s / 2;
 	var yAdjuster = -(s * 9) / 2;
@@ -221,30 +271,38 @@ function drawNumber(x, y, s, number, degrees, rgb = Array(255, 255, 255)){
 	rotate(degrees);  
 
 	//top horizontal segment
-	fill(rgb[0], rgb[1], rgb[2], charSegments[number][0]);
+	fill(rgb[0], rgb[1], rgb[2], charSegments[char][0]);
 	rect(xAdjuster + s * 4, yAdjuster + 0, s * 3, s);
 	//middle horizontal segment
-	fill(rgb[0], rgb[1], rgb[2], charSegments[number][1]);
+	fill(rgb[0], rgb[1], rgb[2], charSegments[char][1]);
 	rect(xAdjuster + s * 4, yAdjuster + s * 4, s * 3, s);
 	//bottom horizontal segment
-	fill(rgb[0], rgb[1], rgb[2], charSegments[number][2]);
+	fill(rgb[0], rgb[1], rgb[2], charSegments[char][2]);
 	rect(xAdjuster + s * 4, yAdjuster + s * 8, s * 3, s);
 	//top-left vertical segment
-	fill(rgb[0], rgb[1], rgb[2], charSegments[number][3]);
+	fill(rgb[0], rgb[1], rgb[2], charSegments[char][3]);
 	rect(xAdjuster + s * 3, yAdjuster + s, s, s * 3);
 	//top-right vertical segment
-	fill(rgb[0], rgb[1], rgb[2], charSegments[number][4]);
+	fill(rgb[0], rgb[1], rgb[2], charSegments[char][4]);
 	rect(xAdjuster + s * 7, yAdjuster + s, s, s * 3);
 	//bottom-left vertical segment
-	fill(rgb[0], rgb[1], rgb[2], charSegments[number][5]);
+	fill(rgb[0], rgb[1], rgb[2], charSegments[char][5]);
 	rect(xAdjuster + s * 3, yAdjuster + s * 5, s, s * 3);
 	//bottom-right vertical segment
-	fill(rgb[0], rgb[1], rgb[2], charSegments[number][6]);
+	fill(rgb[0], rgb[1], rgb[2], charSegments[char][6]);
 	rect(xAdjuster + s * 7, yAdjuster + s * 5, s, s * 3);
-	if(number >= 10){
+	if(char >= 10){
 		fill(rgb[0], rgb[1], rgb[2], charSegments[1][4]);
 		rect(xAdjuster + s, yAdjuster + s, s, s * 3);
 		fill(rgb[0], rgb[1], rgb[2], charSegments[1][6]);
 		rect(xAdjuster + s, yAdjuster + s * 5, s, s * 3);
+	}
+	if(char == "G"){
+		fill(rgb[0], rgb[1], rgb[2], charSegments[char][0]);
+		rect(xAdjuster + s * 5.5, yAdjuster + s * 4, (s * 3) / 2, s);
+	}
+	if(char == "T"){
+		fill(rgb[0], rgb[1], rgb[2], charSegments[char][0]);
+		rect(xAdjuster, yAdjuster + 0, s * 3, s);
 	}
 }
