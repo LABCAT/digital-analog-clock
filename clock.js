@@ -18,11 +18,11 @@ var charSegments = {
   10 : [255,0,255,255,255,255,255],
   11 : [0,0,0,0,255,0,255],
   12 : [255,255,255,0,255,255,0],
-  'G' : [255,0,255,255,0,255,255],
+  'A' : [255,255,0,255,255,255,255],
+  'L' : [0,0,255,255,0,255,0],
   'E' : [255,255,255,255,0,255,0],
-  'T' : [255,0,0,255,0,255,0],
-  'U' : [0,0,255,255,255,255,255],
-  'P' : [255,255,0,255,255,255,0]
+  'R': [255,0,0,255,0,255,0],
+  'T': [255,0,0,255,0,255,0]
 }
 /*
 json object to represent each number on the clock face
@@ -103,29 +103,29 @@ var alarmObj = {
 
 	messageChars: {
 		1: { 
-			'x': 170,
+			'x': 220,
 			'y': 250,
-			'char' : 'G'
+			'char' : 'A'
 		},
 		2: { 
-			'x': 290,
+			'x': 340,
+			'y': 250,
+			'char' : 'L'
+		},
+		3: { 
+			'x': 460,
 			'y': 250,
 			'char' : 'E'
 		},
-		3: { 
-			'x': 470,
-			'y': 250,
-			'char' : 'T'
-		},
 		4: { 
-			'x': 670,
+			'x': 580,
 			'y': 250,
-			'char' : 'U'
+			'char' : 'R'
 		},
 		5: { 
-			'x': 790,
+			'x': 760,
 			'y': 250,
-			'char' : 'P'
+			'char' : 'T'
 		},
 	},
 	
@@ -297,12 +297,8 @@ function drawCharacter(x, y, s, char, degrees, rgb = Array(255, 255, 255)){
 		fill(rgb[0], rgb[1], rgb[2], charSegments[1][6]);
 		rect(xAdjuster + s, yAdjuster + s * 5, s, s * 3);
 	}
-	if(char == "G"){
-		fill(rgb[0], rgb[1], rgb[2], charSegments[char][0]);
-		rect(xAdjuster + s * 5.5, yAdjuster + s * 4, (s * 3) / 2, s);
-	}
 	if(char == "T"){
-		fill(rgb[0], rgb[1], rgb[2], charSegments[char][0]);
+		fill(rgb[0], rgb[1], rgb[2], 255);
 		rect(xAdjuster, yAdjuster + 0, s * 3, s);
 	}
 }
