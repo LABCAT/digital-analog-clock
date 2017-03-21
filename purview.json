@@ -1,6 +1,10 @@
 {
   "commits": [
     {
+      "sha": "99e05228cbaa0613220ae099ea758207bc468df1",
+      "name": "clock_alarm"
+    },
+    {
       "sha": "2c39db4536395c2a7a2cdbb1d04f18fcaa957730",
       "name": "original_clock"
     },
@@ -11,10 +15,6 @@
     {
       "sha": "d04f5cd12e3703520416c2fa209d3b96cdf01926",
       "name": "sketch"
-    },
-    {
-      "sha": "99e05228cbaa0613220ae099ea758207bc468df1",
-      "name": "clock_alarm"
     }
   ]
 }

@@ -1,5 +1,6 @@
-/* object to encapsulate the variables and functionality
-   required to process the alarm
+/* 
+ * object to encapsulate the variables and functionality
+ * required to process the alarm
  */
 var alarmProcessor = {
 	
@@ -49,6 +50,7 @@ var alarmProcessor = {
 			//a circle is drawn from the center of the canvas and gradually grows to fill the canvas
 			fill(255, 0, 0);
 			ellipse(480, 250, this.alarmRadius, this.alarmRadius);
+			//only decrease the countdown variable the current second is not the previous second
 			if(second != this.previousSecond){
 				this.previousSecond = second;
 				this.countdown--;
@@ -95,11 +97,11 @@ var alarmProcessor = {
 }
 
 /*
-json object to represent a collection of characters
-a character on a traditional digital clock is made of 7 segments
-therefore each element of this object is an array is of 7 values
-each value is the level of transparency for each segment to determine whether or not it can be seen
-*/
+ * json object to represent a collection of characters.
+ * a character on a traditional digital clock is made of 7 segments
+ * therefore each element of this object is an array is of 7 values
+ * each value is the level of transparency for each segment to determine whether or not it can be seen
+ */
 var charSegments = {
   0 : [255,0,255,255,255,255,255],
   1 : [0,0,0,0,255,0,255],
@@ -112,27 +114,27 @@ var charSegments = {
   8 : [255,255,255,255,255,255,255],
   9 : [255,255,255,255,255,0,255],
   10 : [255,0,255,255,255,255,255],
-  11 : [0,0,0,0,255,0,255],
+  11 : [0,0,0,255,255,255,255],
   12 : [255,255,255,0,255,255,0],
-  'A' : [255,255,0,255,255,255,255],
-  'L' : [0,0,255,255,0,255,0],
-  'E' : [255,255,255,255,0,255,0],
+  'A': [255,255,0,255,255,255,255],
+  'L': [0,0,255,255,0,255,0],
+  'E': [255,255,255,255,0,255,0],
   'R': [255,0,0,255,0,255,0],
   'T': [255,0,0,255,0,255,0]
 }
 /*
-json object to represent each number on the clock face
-each number has a value for the x position, the y position and the rotation amount (in degrees)
-*/
+ * json object to represent each number on the clock face
+ * each number has a value for the x position, the y position and the rotation amount (in degrees)
+ */
 var clockFaceNumbers = {
 	1: { 
-		'x': 390,
+		'x': 385,
 		'y': 420,
 		'rotation' : 210
 	},
 	2: { 
-		'x': 320,
-		'y': 355,
+		'x': 315,
+		'y': 345,
 		'rotation' : 240
 	},
 	3: { 
@@ -146,17 +148,17 @@ var clockFaceNumbers = {
 		'rotation' : 300
 	},
 	5: { 
-		'x': 380,
-		'y': 80,
+		'x': 385,
+		'y': 85,
 		'rotation' : 330
 	},
 	6: { 
-		'x': 490,
-		'y': 55,
+		'x': 480,
+		'y': 60,
 		'rotation' : 360
 	},
 	7: { 
-		'x': 570,
+		'x': 565,
 		'y': 80,
 		'rotation' : 30
 	},
@@ -171,18 +173,18 @@ var clockFaceNumbers = {
 		'rotation' : 90
 	},
 	10: { 
-		'x': 650,
+		'x': 635,
 		'y': 355,
 		'rotation' : 120
 	},
 	11: { 
-		'x': 570,
+		'x': 575,
 		'y': 420,
 		'rotation' : 150
 	},
 	12: { 
-		'x': 480,
-		'y': 445,
+		'x': 460,
+		'y': 435,
 		'rotation' : 180
 	}
 }
@@ -205,15 +207,10 @@ function draw_clock(hour, minute, second, millis, alarm) {
 	if(hour % 12){
 		currentHour = hour % 12;
 	}
-	
-	fill(random(255), random(255), random(255));
-	push();
-	translate(480, 250);
-	//rotate 0.5 of a degree every millisecond
-	rotate(map(millis, 0, 719, 0, 359));
-	rect(0, 0, 480, 2);
-	pop();	
-	
+
+	//draw rainbow pattern behind the clockface
+	drawRainbowPattern(millis);
+
 	//draw the clock face and highlight the current hour
 	drawClockFace(currentHour, rotationAmount);
 
@@ -231,17 +228,27 @@ function draw_clock(hour, minute, second, millis, alarm) {
 	}
 }
 
-function drawClockBackground() {
-	fill(0); 
-	ellipse(480, 250, 498, 498);
-	fill(70, 151, 255); 
-	ellipse(480, 250, 496, 495);
-	fill(255);
-	ellipse(480, 250, 492, 492);
-	fill(2, 4, 103);  
-	ellipse(480, 250, 489, 489);
+/**
+ * draws a random rainbow pattern behind the clock to make the background more visually interesting
+ */
+function drawRainbowPattern(millis) {
+	//create a random fill colour
+	fill(random(255), random(255), random(255));
+	push();
+	translate(480, 250);
+	//map millis to degrees, ignores millis greater than 719 so that the value for degree will be either a whole number +/- 0.5
+	var degree = map(millis, 0, 719, 0, 359);
+	//rotate 0.5 of a degree every millisecond
+	rotate(degree);
+	rect(0, 0, 480, 2);
+	pop();	
 }
 
+/**
+ * draws the clock background and all the numbers to display on the face
+ * @param {Number} currentHour       - the current hour of the day (from 1-12)
+ * @param {Number} rotationAmount    - the amount of degrees to rotate 
+ */
 function drawClockFace(currentHour, rotationAmount){
 	var rgb = Array(), rotation = 0;
 	
@@ -250,6 +257,7 @@ function drawClockFace(currentHour, rotationAmount){
 	//draw all the numbers on the clock face
 	for(var i =1; i <= 12; i++){
 		if(i == currentHour){
+			//if "i" is the current hour then change the colour and set it to rotate 6 degrees every second
 			rgb = Array(236, 189, 9);
 			rotation = clockFaceNumbers[i]['rotation'] + rotationAmount;
 		}
@@ -270,8 +278,30 @@ function drawClockFace(currentHour, rotationAmount){
 	
 }
 
+/**
+ * draws the clock background 
+ */
+function drawClockBackground() {
+	fill(0); 
+	ellipse(480, 250, 498, 498);
+	fill(70, 151, 255); 
+	ellipse(480, 250, 496, 495);
+	fill(255);
+	ellipse(480, 250, 492, 492);
+	fill(2, 4, 103);  
+	ellipse(480, 250, 489, 489);
+}
+
+/**
+ * draws a character on the canvs
+ * @param {Number} x       - the x postion for the center of the character
+ * @param {Number} y       - the y position for the center of the character
+ * @param {Number} s       - the size mulitple to determine how big a character will be
+ * @param {Number} degrees - the number of degrees to rotate the character around its center
+ * @param {Array} rgb      - an array representing the RGB values that determine the fill colour of the character
+ */
 function drawCharacter(x, y, s, char, degrees, rgb = Array(255, 255, 255)){
-	//adjustment variables used to allow the shapes to be drawn with 0,0 point as the center of the shapes
+	//adjustment variables used to allow the characters to be drawn with x,y point as the center of the shapes
 	var xAdjuster = -(s * 5) - s / 2;
 	var yAdjuster = -(s * 9) / 2;
 	
@@ -301,12 +331,15 @@ function drawCharacter(x, y, s, char, degrees, rgb = Array(255, 255, 255)){
 	//bottom-right vertical segment
 	fill(rgb[0], rgb[1], rgb[2], charSegments[char][6]);
 	rect(xAdjuster + s * 7, yAdjuster + s * 5, s, s * 3);
-	if(char >= 10){
+
+	//special additions required for the characters '10' and '12'
+	if(char == 10 || char == 12){
 		fill(rgb[0], rgb[1], rgb[2], charSegments[1][4]);
 		rect(xAdjuster + s, yAdjuster + s, s, s * 3);
 		fill(rgb[0], rgb[1], rgb[2], charSegments[1][6]);
 		rect(xAdjuster + s, yAdjuster + s * 5, s, s * 3);
 	}
+	//special additions required for the character 'T'
 	if(char == "T"){
 		fill(rgb[0], rgb[1], rgb[2], 255);
 		rect(xAdjuster, yAdjuster + 0, s * 3, s);
