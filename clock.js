@@ -84,13 +84,13 @@ var alarmProcessor = {
 	},
 	//when the alarm is turned off this function is used to reset this object to it's original state
 	reset: function() {
+		this.countdown = 20;
+		this.previousSecond = -1;
+		this.alarmRadius = 0;
 		if(!this.ready){
 			resetMatrix();
 			fill(255);
 			rect(0, 0, 960, 500);
-			this.countdown = 20;
-			this.previousSecond = -1;
-			this.alarmRadius = 0;
 			this.ready = true;
 		}
 	}
@@ -218,6 +218,7 @@ function draw_clock(hour, minute, second, millis, alarm) {
 	drawCharacter(440, 250, 10, firstMinuteDigit, rotationAmount, Array(70, 151, 255));
 	drawCharacter(520, 250, 10, secondMinuteDigit, rotationAmount, Array(70, 151, 255));
 	
+
 	if(alarm >= 0 && alarm < 21){
 		//if the alarm has less than 21 seconds until it will go, begin the processing the alarm
 		alarmProcessor.process(second, millis, alarm);
