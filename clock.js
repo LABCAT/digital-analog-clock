@@ -221,8 +221,8 @@ function draw_clock(hour, minute, second, millis, alarm) {
 	drawCharacter(440, 250, 10, firstMinuteDigit, rotationAmount, Array(70, 151, 255));
 	drawCharacter(520, 250, 10, secondMinuteDigit, rotationAmount, Array(70, 151, 255));
 	
-	if(alarm >= 0){
-		//if the alarm is set or activated, initialise the alarm object
+	if(alarm >= 0 && alarm < 21){
+		//if the alarm has less than 21 seconds until it will go, begin the processing the alarm
 		alarmProcessor.process(second, millis, alarm);
 	}
 	else {

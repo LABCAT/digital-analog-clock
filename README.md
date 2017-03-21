@@ -1,7 +1,7 @@
 ## PS1 MDDN 242 2017 - LABCAT - Shane Watters - 300078996
 
-### Rotating Digital Clock
+### RED ALERT
 
-In part 2 of the assignment I created a static sketch of Maeda's 8th clock without making any significant changes.  For this part of the assignment I have implemented the functionality required to make the sketch dynamic and display the current time.  
+Once the alarm has less than 21 seconds until it will go off,  a visual warning is created for the viewer. This begins as a tiny red circle in the center of the canvas which gradually grows to fill the canvas before the alarm starts going off. 
 
-I have also decided to make animated effects of my clock different from that of Maeda's clock.  I want to combine elements of a analog clock with the digital clock so have decided to add rotating functionality. The time will be displayed digitally and will rotate in the same manner as the second hand of an analog clock. 
+The actual alarm is inspired by a play on words. When the alarm goes off the word "alert" is displayed in the center of the canvas with a flashing red background. The colour of the background combined with the word "alert" creates a rebus of the term "red alert". 
