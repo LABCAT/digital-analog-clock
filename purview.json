@@ -1,16 +1,20 @@
 {
   "commits": [
     {
-      "sha": "d19f7116a4b6d06638aa160ac326cb93/2c39db4536395c2a7a2cdbb1d04f18fcaa957730",
+      "sha": "2c39db4536395c2a7a2cdbb1d04f18fcaa957730",
       "name": "original_clock"
     },
     {
-      "sha": "d19f7116a4b6d06638aa160ac326cb93/2fb1c1a1346de8b829423fa43f8415bca344b630",
+      "sha": "2fb1c1a1346de8b829423fa43f8415bca344b630",
       "name": "maeda_clock"
     },
     {
-      "sha": "d19f7116a4b6d06638aa160ac326cb93/d04f5cd12e3703520416c2fa209d3b96cdf01926",
+      "sha": "d04f5cd12e3703520416c2fa209d3b96cdf01926",
       "name": "sketch"
+    },
+    {
+      "sha": "99e05228cbaa0613220ae099ea758207bc468df1",
+      "name": "clock_alarm"
     }
   ]
 }
