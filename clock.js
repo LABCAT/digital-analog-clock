@@ -199,7 +199,8 @@ function draw_clock(hour, minute, second, millis, alarm) {
 	strokeWeight(0);
   
 	//variables
-	var rotationAmount = floor(map(second, 0, 59, 0, 359));
+	var rotationAmount = floor(map(second, 0, 60, 0, 360));
+	//print(rotationAmount);
 	var firstMinuteDigit = floor(map(minute, 0, 59, 0, 5.9));
 	var secondMinuteDigit = minute % 10;
 	var currentHour = 12;
@@ -215,8 +216,8 @@ function draw_clock(hour, minute, second, millis, alarm) {
 	drawClockFace(currentHour, rotationAmount);
 
 	//draw the minute digits
-	drawCharacter(440, 250, 10, firstMinuteDigit, rotationAmount, Array(70, 151, 255));
-	drawCharacter(520, 250, 10, secondMinuteDigit, rotationAmount, Array(70, 151, 255));
+	drawCharacter(435, 250, 10, firstMinuteDigit, rotationAmount, Array(70, 151, 255));
+	drawCharacter(525, 250, 10, secondMinuteDigit, rotationAmount, Array(70, 151, 255));
 	
 
 	if(alarm >= 0 && alarm < 21){
