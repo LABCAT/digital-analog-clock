@@ -4,6 +4,8 @@
 
 ![alt text](https://raw.githubusercontent.com/LABCAT/digital-analog-clock/master/preview.jpg)
 
+[Live site](https://labcat.github.io/digital-analog-clock/)
+
 This is a digital clock designed to look like an analog clock. The clock has no hands unlike an analog clock. Instead the passing of seconds is shown by the minute digits rotating 6 degrees every second.
 The digit/s representing the current hour is/are displayed as a different colour (from other hours) and also rotates in the same manner as the minute digits.  
 
